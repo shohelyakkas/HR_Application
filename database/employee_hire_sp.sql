@@ -1,6 +1,8 @@
 -- Procedure: employee_hire_sp
 -- Purpose: Insert a new employee into HR_EMPLOYEES using EMPLOYEES_SEQ
 
+
+
 CREATE OR REPLACE PROCEDURE employee_hire_sp (
     p_first_name     IN  VARCHAR2,
     p_last_name      IN  VARCHAR2,
