@@ -83,8 +83,8 @@ function EmployeeList() {
               <th>ID</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Email</th>
-              <th>Phone</th>
+              <th className="email-col">Email</th>
+              <th className="phone-col">Phone</th>
               <th>Job ID</th>
               <th>Salary</th>
               <th>Manager ID</th>
@@ -98,7 +98,7 @@ function EmployeeList() {
                 <td>{employee.employee_id}</td>
                 <td>{employee.first_name}</td>
                 <td>{employee.last_name}</td>
-                <td>
+                <td className="email-col">
                   {editingId === employee.employee_id ? (
                     <input
                       type="email"
@@ -111,7 +111,7 @@ function EmployeeList() {
                     employee.email
                   )}
                 </td>
-                <td>
+                <td className="phone-col">
                   {editingId === employee.employee_id ? (
                     <input
                       type="text"
