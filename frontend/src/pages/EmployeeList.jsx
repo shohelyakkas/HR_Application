@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
-import { getEmployees, updateEmployee } from '../services/api';
+import { getEmployees, updateEmployee, getJobs } from '../services/api';
 import '../styles/Forms.css';
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
   const [editingId, setEditingId] = useState(null);
-  const [editForm, setEditForm] = useState({ salary: '', phone: '', email: '' });
+  const [editForm, setEditForm] = useState({ salary: '', phone: '', email: '' , job_id: ''});
   const [message, setMessage] = useState({ text: '', type: '' });
   const [loading, setLoading] = useState(false);
+  const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
     fetchEmployees();
+    fetchJobs();
   }, []);
 
   const fetchEmployees = async () => {
@@ -25,19 +27,34 @@ function EmployeeList() {
     }
   };
 
+  const fetchJobs = async () => {
+  try {
+    const response = await getJobs();
+    setJobs(response.data);
+  } catch (error) {
+    setMessage(prev => ({
+      text:
+        (prev.text ? prev.text + ' ' : '') +
+        'Error loading jobs: ' + (error.response?.data?.error || error.message),
+      type: 'error'
+    }));
+  }
+};
+
   const handleEdit = (employee) => {
     setEditingId(employee.employee_id);
     setEditForm({
       salary: employee.salary || '',
       phone: employee.phone_number || '',
-      email: employee.email || ''
+      email: employee.email || '',
+      job_id: employee.job_id || ''
     });
     setMessage({ text: '', type: '' });
   };
 
   const handleCancel = () => {
     setEditingId(null);
-    setEditForm({ salary: '', phone: '', email: '' });
+    setEditForm({ salary: '', phone: '', email: '', job_id: '' });
     setMessage({ text: '', type: '' });
   };
 
@@ -70,7 +87,7 @@ function EmployeeList() {
   return (
     <div className="page-container">
       <h2>Employee List</h2>
-      <p className="info-text">You can edit Salary, Phone, or Email only</p>
+      <p className="info-text">You can edit Salary, Phone, Email, and Department ID only</p>
       {message.text && (
         <div className={`message ${message.type}`}>
           {message.text}
@@ -124,7 +141,34 @@ function EmployeeList() {
                     employee.phone_number
                   )}
                 </td>
-                <td>{employee.job_id}</td>
+                <td>
+                  {editingId === employee.employee_id ? (
+                    <select
+                      name="job_id"
+                      value={editForm.job_id}
+                      onChange={handleChange}
+                      className="edit-input"
+                    >
+                      {/* Show CURRENT job as the first option */}
+                      <option value={editForm.job_id}>
+                        {editForm.job_id} – {
+                          jobs.find(j => j.job_id === editForm.job_id)?.job_title || 'Current Job'
+                        }
+                      </option>
+
+                      {/* Other jobs */}
+                      {jobs
+                        .filter(job => job.job_id !== editForm.job_id)   // avoid duplicate
+                        .map(job => (
+                          <option key={job.job_id} value={job.job_id}>
+                            {job.job_id} – {job.job_title}
+                          </option>
+                        ))}
+                    </select>
+                  ) : (
+                    employee.job_id
+                  )}
+                </td>
                 <td>
                   {editingId === employee.employee_id ? (
                     <input
