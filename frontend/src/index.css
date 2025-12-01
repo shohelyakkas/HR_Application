@@ -54,6 +54,21 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.data-table tbody td {
+  color: #444;
+}
+
+.nav-title-link {
+  text-decoration: none;
+  color: inherit;      
+  cursor: pointer;
+}
+
+.nav-title-link:hover {
+  opacity: 0.85;       
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -123,7 +123,7 @@ END;`;
 app.put('/employee/:id', async (req, res) => {
     try {
         const empId = req.params.id;
-        const { salary, phone, email } = req.body;
+        const { salary, phone, email, job_id } = req.body;
 
         // use your procedure update_employee_info OR plain UPDATE
         const sql = `
@@ -132,7 +132,8 @@ app.put('/employee/:id', async (req, res) => {
           :p_emp_id,
           :p_salary,
           :p_phone,
-          :p_email
+          :p_email,
+          :p_job_id
         );
       END;`;
 
@@ -142,7 +143,8 @@ app.put('/employee/:id', async (req, res) => {
                 p_emp_id: empId,
                 p_salary: salary,
                 p_phone: phone,
-                p_email: email
+                p_email: email,
+                p_job_id: job_id
             },
             { autoCommit: true }
         );
