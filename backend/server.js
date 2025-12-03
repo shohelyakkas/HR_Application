@@ -112,10 +112,8 @@ END;`;
 
     } catch (err) {
         console.error(err);
-        return sendError(res, err);
+        return sendError(res, err); //How did I get this error?
     }
-
-
 
 });
 

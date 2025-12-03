@@ -1,0 +1,16 @@
+# Node and build
+node_modules/
+frontend/.vite/
+dist/
+build/
+
+# Logs
+*.log
+
+# Environment files
+.env
+backend/.env
+
+# OS files
+.DS_Store
+Thumbs.db
